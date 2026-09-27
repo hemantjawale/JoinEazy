@@ -1,0 +1,26 @@
+{
+  "name": "joineazy-assignment-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w frontend",
+    "start": "npm run start -w backend",
+    "test": "npm run test -w backend",
+    "check": "npm run lint -w frontend && npm test && npm run build",
+    "test:e2e": "npm run build && node tests/e2e.mjs",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "playwright": "^1.63.0",
+    "prettier": "^3.9.9"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
