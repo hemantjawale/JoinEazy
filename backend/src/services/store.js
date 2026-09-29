@@ -2,13 +2,13 @@ import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { createSeed } from '../data/seed.js';
 
-export async function createStore(filePath) {
+export async function createStore(filePath, seedFactory = createSeed) {
   let data;
   try {
     data = JSON.parse(await readFile(filePath, 'utf8'));
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
-    data = createSeed();
+    data = await seedFactory();
   }
   let queue = Promise.resolve();
   const persist = async (next) => {

@@ -2,11 +2,14 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { createApi } from './routes/api.js';
+import { createV2Api } from './v2/router.js';
 
-export function createApp(store) {
+export function createApp(store, round2) {
   const app = express();
   app.disable('x-powered-by');
+  app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'joineazy' }));
   app.use(express.json({ limit: '32kb' }));
+  if (round2) app.use('/api/v2', createV2Api(round2.store, round2.secret));
   app.use('/api', createApi(store));
   app.use('/api', (_req, res) => res.status(404).json({ message: 'API route not found.' }));
   const frontend = fileURLToPath(new URL('../../frontend/dist/', import.meta.url));
