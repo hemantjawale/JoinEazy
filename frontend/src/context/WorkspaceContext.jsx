@@ -53,7 +53,7 @@ export function WorkspaceProvider({ children }) {
     try {
       localStorage.setItem('joineazy-profile', id);
     } catch {
-      /* Profile still works without browser storage. */
+      
     }
   };
   const mutate = useCallback(
